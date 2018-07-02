@@ -43,6 +43,8 @@ public class User implements UserBehavior {
 	String nickName;// 昵称 , 用于展示和提示
 	int age;
 
+	
+	Random randID = new Random();
 	// 图书馆卡卡号随机生成器 不重复
 	public long IDGenerator() {
 		long RandomID = randID.nextLong();
@@ -73,9 +75,11 @@ public class User implements UserBehavior {
 		long order_RandomID = Long.parseLong(order_RdIDStr);
 		if (!IDNumberSet.add(order_RandomID)) { // 应该去遍历Set比对后再存入??
 			IDGenerator();
-		} else {
-			IDNumberSet.add(order_RandomID);// 如果能存入则存入该不同的ID
-		}
+		} 
+		
+//		else {
+//			IDNumberSet.add(order_RandomID);// 如果能存入则存入该不同的ID
+//		}
 		return order_RandomID;
 	}
 
@@ -87,7 +91,7 @@ public class User implements UserBehavior {
 		ID_number = iD_number;
 	}
 
-	Random randID = new Random();
+	
 
 	//
 	public User(String userName, String passWord, String sex, String nickName, int age) {
@@ -134,7 +138,7 @@ public class User implements UserBehavior {
 	@Override
 	public void borrow(Books book) {
 		// 已经判定了书的存在才传入这里
-
+		
 		book.beBorrowed = 1;
 		System.out.println("这是您的《" + book.bookName + "》,请拿好!");
 		System.out.println("您的阅读次数-1");

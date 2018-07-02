@@ -2,7 +2,6 @@ package 图书管理系统2;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -124,6 +123,11 @@ public class BookShelf implements Library {
 
 		setCategoryShelf("计算机类", "Spring实战", book5);
 		setCategoryShelf("计算机类", "HTTP权威指南", book6);
+	}
+
+	public static void getBookFromBooksDB(String inputBookName) {
+		String sql_BS = "select * from books where book_name = '"+inputBookName+"'";
+		MariaSQLManager.sql_Handler(sql_BS);
 	}
 
 }

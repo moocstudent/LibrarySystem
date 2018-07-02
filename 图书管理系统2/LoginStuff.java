@@ -32,14 +32,22 @@ public class LoginStuff {
 
 	// 执行login(ID)前必须执行该方法
 	// 使用ID卡号登陆
+	//先预设ID不通过.false,通过玛丽亚SQL管理器判定后传回true或者false
+	public static boolean ID_IsPassed = false;
+	public void setID_IsPassed(boolean ID_ispassed) {
+		this.ID_IsPassed = ID_ispassed;
+	}
+	public boolean getID_IsPassed() {
+		return ID_IsPassed;
+	}
 	public static void loginWithID() {
 		System.out.println("请输入您的卡号,以#号结束💗,(或只输入#返回上一层)");
 		String ID_numberStr = "";
 		String nextNumber = in.next();
 		int OriginalIDlength = Library.IDLength;
 		ID_numberStr = nextNumber.trim();
-		boolean IDPassed = false;
-
+		boolean IDRegPassed = false;
+		
 		if (ID_numberStr.endsWith("#")) {
 			if (ID_numberStr.length() == 1 && ID_numberStr.equals("#")) {
 				loginSelect();
@@ -47,17 +55,30 @@ public class LoginStuff {
 			}
 			ID_numberStr = ID_numberStr.replace("#", "");
 			if (ID_numberStr.length() != OriginalIDlength) {
-				IDPassed = false;
+				IDRegPassed = false;
 				System.out.println("正确卡号长度为" + OriginalIDlength + "位.请重新输入:💗");
 			}
 			if (ID_numberStr.length() == OriginalIDlength) {
-				IDPassed = true;
+				IDRegPassed = true;//ID格式及长度正确
 			}
 
 		}
-		if (IDPassed) {
-			long ID_number = (long) Long.valueOf(ID_numberStr);
-			login(ID_number);
+		if (IDRegPassed) {
+			//输入的ID格式正确后,从数据库查询该ID,有的话返回true,无的话返回false.
+			String loginByID = "select * from lib_users where card_id = "+ID_numberStr;
+			MariaSQLManager.sql_Handler(loginByID);
+			LoginStuff loginStuff = new LoginStuff();
+			//接受玛丽亚传回来的true(ID存在)或者false(ID不存在)
+			boolean idIsOk = loginStuff.getID_IsPassed();
+			if(idIsOk) {
+				System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+				System.out.println("@@@@@💗ID卡登陆成功!💗@@@@@");
+				System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+			}else {
+				System.err.println("无此ID卡号!请验证后重新登陆!💗");
+				loginWithID();
+			}
+//			login(ID_number);
 		} else {
 			loginWithID();
 		}

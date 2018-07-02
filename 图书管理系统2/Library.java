@@ -9,4 +9,7 @@ package 图书管理系统2;
 public interface Library {
 	String libraryName = "魔偶书城";
 	int IDLength = 10;
+//	public static void hi() {
+//		System.out.println("欢迎来到"+libraryName+".");
+//	}
 }

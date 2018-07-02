@@ -1,6 +1,9 @@
 package 图书管理系统2;
 
+import java.awt.print.Book;
 import java.util.Scanner;
+
+import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
 
 public class LibrarianService implements Service,Library {
 
@@ -10,7 +13,7 @@ public class LibrarianService implements Service,Library {
 	public String getUserSelfName() {
 		return userSelfName;
 	}
-
+	
 	// getHello()调用给用户看的主面板,选项信息
 	public static void getHello() {
 
@@ -23,7 +26,10 @@ public class LibrarianService implements Service,Library {
 			System.out.println("3.想看下有什么类别的书再办卡.");
 			System.out.println("4.只想买几本书,不想办卡.");
 			System.out.println("5.查看" + libraryName + "介绍.");
+			System.out.println("6.管理员操作.");
 			System.out.println("#.离开.");
+			
+			
 			System.out.println("------------------------------");
 			String select = in.next();
 			if (select.equals("1")) {
@@ -40,6 +46,9 @@ public class LibrarianService implements Service,Library {
 				System.out.println("💗💗💗" + libraryName + "💗💗💗");
 				System.out.println(libraryName + "是一家寓教于乐,集咖啡吧及上网冲浪于一体的多功能全方位的图书馆.");
 				System.out.println();
+			}else if(select.equals("6")) {
+				MariaSQLManager.sql_Helper();
+				break;
 			} else if (select.equals("#")) {
 				System.out.println("(*^_^*)欢迎再来哦!💗");
 				helloRun = false;
@@ -52,8 +61,7 @@ public class LibrarianService implements Service,Library {
 	}
 
 	// 登陆之后的一些事情,比如直接给用户显示一下书的分类,或者其他服务项目
-	public void afterLogin() {
-
+	public final void afterLogin() {
 	}
 
 	// 查书,通过输入书名查询书的具体信息,没有则提示没有之类的,并持续让用户可查其他书名,或者不再查询
@@ -62,7 +70,9 @@ public class LibrarianService implements Service,Library {
 		System.out.println("请给出书名,我给您查下.不用书名号.💗");
 		String inputBookName = in.next();
 		System.out.println("------------");
-		BookShelf.getBook(inputBookName);
+//		BookShelf.getBook(inputBookName);
+		BookShelf.getBookFromBooksDB(inputBookName);
+//		MariaSQLManager.sql_Handler(inputBookName);
 
 		// 查询其他书名
 		System.out.println("您还想查看其他书的信息吗?");
